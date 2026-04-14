@@ -1,6 +1,4 @@
 # sportys-test-scraper
-<img width="1364" height="211" alt="image" src="https://github.com/user-attachments/assets/2acb4425-d551-4876-8194-7d4afb2e06de" />
-<img width="709" height="738" alt="image" src="https://github.com/user-attachments/assets/c97c7467-6084-40d9-81a8-270489afac57" />
 
 # What is This?
 Automatically generate new practice tests from your previously missed questions on your past Sporty's ground school / private pilot practice tests (in PDF format). 
@@ -10,6 +8,9 @@ Additionally, see statistics like how long you took on each test vs. the allowed
 by [@ben_makes_stuff](https://x.com/ben_makes_stuff)
 
 [![Buy me a coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=☕&slug=ben_makes_stuff&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/ben_makes_stuff)
+
+<img width="1364" height="211" alt="image" src="https://github.com/user-attachments/assets/2acb4425-d551-4876-8194-7d4afb2e06de" />
+<img width="709" height="738" alt="image" src="https://github.com/user-attachments/assets/c97c7467-6084-40d9-81a8-270489afac57" />
 
 # Usage
 
