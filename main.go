@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"log/slog"
@@ -15,7 +16,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/joho/godotenv"
 	"github.com/jung-kurt/gofpdf"
 	"github.com/samber/lo"
 )
@@ -59,22 +59,29 @@ type ReviewTestQuestionsResult struct {
 }
 
 func main() {
-	godotenv.Load()
-	jwtToken := os.Getenv("JWT_TOKEN")
-	courseType := os.Getenv("COURSE_TYPE")
+	jwtToken := flag.String("jwt-token", "", "JWT token for authentication (required)")
+	courseType := flag.String("course-type", "", "Course type (required)")
+
+	flag.Parse()
+
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
-	if jwtToken == "" {
-		logger.Error("JWT_TOKEN environment variable not set, exiting")
+	if strings.TrimSpace(*jwtToken) == "" || strings.TrimSpace(*courseType) == "" {
+		fmt.Println("Usage:")
+		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf(getExamResultsURLFormat, courseType, page, pageSize), nil)
+	req, err := http.NewRequest(
+		http.MethodGet,
+		fmt.Sprintf(getExamResultsURLFormat, *courseType, page, pageSize),
+		nil,
+	)
 	if err != nil {
 		logger.Error("failed to create request", "error", err)
 		os.Exit(1)
 	}
-	req.Header.Set("Authorization", "Bearer "+jwtToken)
+	req.Header.Set("Authorization", "Bearer "+*jwtToken)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -89,8 +96,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Deduplicate questions across all tests by ReviewTestQuestion.ID.
-	// Preserve order of first-seen question. Keep only incorrect questions (as before).
 	seen := map[int64]bool{}
 	var dedupedQuestions []ReviewTestQuestion
 
@@ -100,7 +105,7 @@ func main() {
 			logger.Error("failed to create request", "error", err)
 			os.Exit(1)
 		}
-		req.Header.Set("Authorization", "Bearer "+jwtToken)
+		req.Header.Set("Authorization", "Bearer "+*jwtToken)
 
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
@@ -114,13 +119,13 @@ func main() {
 			logger.Error("failed to read review test response body", "error", readErr)
 			os.Exit(1)
 		}
+
 		var reviewTestQuestionsResult ReviewTestQuestionsResult
 		if err := json.Unmarshal(bodyBytes, &reviewTestQuestionsResult); err != nil {
 			logger.Error("failed to decode review test questions response", "error", err)
 			os.Exit(1)
 		}
 
-		// Accumulate deduped questions (keep first-seen incorrect questions)
 		for _, q := range reviewTestQuestionsResult.Questions {
 			if !seen[q.ID] && !q.Correct {
 				seen[q.ID] = true
@@ -129,19 +134,19 @@ func main() {
 		}
 
 		timeTakenMins := math.Round(test.EndTime.Sub(test.BeginTime).Minutes())
-		logger.Info("Test results", "test_id", test.ID, "correct", lo.CountBy(reviewTestQuestionsResult.Questions, func(q ReviewTestQuestion) bool {
-			return q.Correct
-		}), "incorrect", lo.CountBy(reviewTestQuestionsResult.Questions, func(q ReviewTestQuestion) bool {
-			return !q.Correct
-		}), "time_taken_mins", timeTakenMins, "time_remaining_mins", timeAllowedMins-timeTakenMins)
+		logger.Info("Test results",
+			"test_id", test.ID,
+			"correct", lo.CountBy(reviewTestQuestionsResult.Questions, func(q ReviewTestQuestion) bool { return q.Correct }),
+			"incorrect", lo.CountBy(reviewTestQuestionsResult.Questions, func(q ReviewTestQuestion) bool { return !q.Correct }),
+			"time_taken_mins", timeTakenMins,
+			"time_remaining_mins", timeAllowedMins-timeTakenMins,
+		)
 	}
 
-	// Sort for deterministic output
-	sort.Slice(dedupedQuestions, func(i, j int) bool { return dedupedQuestions[i].ID < dedupedQuestions[j].ID })
+	sort.Slice(dedupedQuestions, func(i, j int) bool {
+		return dedupedQuestions[i].ID < dedupedQuestions[j].ID
+	})
 
-	// Create two PDFs:
-	// 1) questions_practice.pdf - questions with choices, correct answers NOT shown
-	// 2) questions_with_answers.pdf - questions with choices, correct answer marked and explanation shown
 	practiceFile := "questions_practice.pdf"
 	withAnswersFile := "questions_with_answers.pdf"
 
