@@ -59,8 +59,8 @@ type ReviewTestQuestionsResult struct {
 }
 
 func main() {
-	jwtToken := flag.String("jwt-token", "", "JWT token for authentication (required)")
-	courseType := flag.String("course-type", "", "Course type (required)")
+	jwtToken := flag.String("j", "", "JWT token for authentication (required)")
+	courseType := flag.String("c", "", "Course type (required)")
 
 	flag.Parse()
 

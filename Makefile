@@ -1,4 +1,4 @@
-APP_NAME := sportys_test_scraper
+APP_NAME := sportys-test-scraper
 OUTPUT_DIR := build
 CGO_ENABLED := 0
 
