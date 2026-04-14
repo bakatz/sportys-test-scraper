@@ -18,5 +18,9 @@ by [@ben_makes_stuff](https://x.com/ben_makes_stuff)
 1. Run ./sportys-test-scraper-whatever-platform -j <your_jwt_token> -c <course_type>
 1. See questions_practice.pdf and questions_with_answers.pdf for your auto-generated practice tests, and the output in your terminal for your test taking statistics.
 
+# FAQ
+Q: Do I need to be subscribed to Sporty's ground school to use this?
+A: No. Their practice test taking tool is completely free (only the course and endorsement cost money), you just need to sign up for a free account on their site to use it.
+
 # Support
 No. This is an as-is, MIT-licensed, free and open source release. Fork and make changes yourself if you'd like to.
