@@ -5,8 +5,6 @@ Automatically generate new practice tests from your previously missed questions 
 
 Additionally, see statistics like how long you took on each test vs. the allowed time limit on the real test, and how many questions you got wrong per test.
 
-This tool is mainly for people who understand how to work with Chrome Developer Tools. I'm not going to release "easier" versions for people who don't know how to do things like inspect requests.
-
 by [@ben_makes_stuff](https://x.com/ben_makes_stuff)
 
 [![Buy me a coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=☕&slug=ben_makes_stuff&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/ben_makes_stuff)
