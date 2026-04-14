@@ -15,7 +15,7 @@ by [@ben_makes_stuff](https://x.com/ben_makes_stuff)
 1. Find your JWT by opening Chrome Developer Tools (or similar), then navigate to https://courses.sportys.com/training/portal/demo/course/PRIVATE/testprep. Pick any request like "getList" and look for the "Authorization" header. The JWT is the long value after the word "Bearer" (do not include Bearer or the space after Bearer)
 1. Note the type of course you've taken, possible values are: PRIVATE, INSTRUMENT, etc. The course type is also visible in the above URL ".../demo/course/PRIVATE/..." <-- "PRIVATE"
 1. Run ./sportys-test-scraper -j <your_jwt_token> -c <course_type>
-1. See questions_practice.pdf and questions_with_answers.pdf, and the output in your terminal for statistics.
+1. See questions_practice.pdf and questions_with_answers.pdf for your auto-generated practice tests, and the output in your terminal for your test taking statistics.
 
 # Support
 No. This is an as-is, MIT-licensed, free and open source release. Fork and make changes yourself if you'd like to.
