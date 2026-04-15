@@ -14,7 +14,7 @@ by [@ben_makes_stuff](https://x.com/ben_makes_stuff)
 
 # Usage
 
-1. Download the latest release from the releases page. For recent MacOS devices, pick the download with darwin-arm-64 in the path.
+1. Download the latest release from the releases page. For recent MacOS devices, pick the download with `darwin-arm64` in the path.
 1. Open Chrome Developer Tools (or similar), then navigate to your test prep page for your course, i.e. https://courses.sportys.com/training/portal/demo/course/PRIVATE/testprep. Then go to the requests tab, pick any request like "getList" and look for the "Authorization" header. Your JWT is the long value after the word "Bearer" (do not include Bearer or the space after Bearer)
 1. Note the type of course you've taken, possible values are: PRIVATE, INSTRUMENT, etc. The course type is also visible in the above URL ".../demo/course/PRIVATE/..." <-- "PRIVATE"
 1. Run `./sportys-test-scraper-whatever-platform -j <your_jwt_token> -c <course_type>` in your terminal.
